@@ -29,7 +29,7 @@ El servicio se iniciará en `http://127.0.0.1:5000/ner`.
 
 ### Probar la API con el ejemplo
 
-1. Asegúrate de que la API esté en funcionamiento.
+1. Asegurarse de que la API esté en funcionamiento.
 2. Navega hasta el directorio donde se encuentra el script de prueba.
 3. Ejecuta el script de prueba:
 
