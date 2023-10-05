@@ -1,28 +1,49 @@
-# Importamos las bibliotecas necesarias(request para hacer peticiones a la api y json para codificar y decodificar datos en formato JSON )
-import requests
-import json
+# Importamos las bibliotecas necesarias
+from flask import Flask, request, jsonify
+import spacy
 
-# URL de la API Flask en localhost
-url = "http://127.0.0.1:5000/ner"
-# Definimos los encabezados de la petición
-headers = {
-    "Content-Type": "application/json"
-}
-# Definimos el cuerpo de la petición con las oraciones de ejemplo
-data = {
-    "oraciones": [
-        "Apple está buscando comprar una startup del Reino Unido por mil millones de dólares.",
-        "San Francisco considera prohibir los robots de entrega en la acera."
-    ]
-}
+# Creamos una instancia de Flask y cargamos el modelo de Spacy para español
+app = Flask(__name__)
+nlp = spacy.load("es_core_news_sm")
 
-# Realizamos la petición POST a nuestra API
-response = requests.post(url, headers=headers, data=json.dumps(data))
+@app.route('/ner', methods=['POST'])
+def named_entity_recognition():
+    try:
+        # Obtenemos el JSON del cuerpo de la petición
+        data = request.json
 
-# Imprimimos el código de respuesta y el contenido de la respuesta
-print("Código de respuesta:", response.status_code)
-print("Resultado:")
+        # Verificamos que el JSON contenga el campo 'oraciones'
+        if "oraciones" not in data:
+            return jsonify({"error": "El campo 'oraciones' no está presente en el JSON enviado."}), 400
 
+        # Extraemos la lista de oraciones del JSON o una lista vacía si no existe
+        sentences = data.get('oraciones', [])
+        
+        results = []
 
-#Cadena JSON resultante formateada con un indentado de 4 espacios y devolución de los carácteres tal y como están.
-print(json.dumps(response.json(), indent=4, ensure_ascii=False)) 
+        # Procesamos cada oración con Spacy
+        for sentence in sentences:
+            doc = nlp(sentence)
+            entities = {}
+
+            # Para cada entidad encontrada, guardamos su texto y etiqueta
+            for ent in doc.ents:
+                entities[ent.text] = ent.label_
+
+            # Agregamos los resultados a la lista de respuestas
+            result = {
+                "oración": sentence,
+                "entidades": entities
+            }
+            results.append(result)
+
+        # Devolvemos el resultado en formato JSON
+        return jsonify({"resultado": results})
+
+    # Captura cualquier error inesperado
+    except Exception as e:
+        return jsonify({"error": "Ha ocurrido un error al procesar la solicitud: " + str(e)}), 500
+
+# Si este archivo se ejecuta como el principal, iniciamos la aplicación Flask
+if __name__ == "__main__":
+    app.run(debug=True)
