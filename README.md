@@ -12,6 +12,8 @@ Esta API permite identificar entidades nombradas en oraciones en español utiliz
 ```bash
 pip install flask spacy requests
 python -m spacy download es_core_news_sm
+pip install requests
+ 
 ```
 
 ## Uso
