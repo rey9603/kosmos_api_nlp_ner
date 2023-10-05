@@ -1,34 +1,69 @@
-# kosmos_api_nlp_ner
-# Api para realizar NER usando Spacy para Kosmos
-
 # API de Reconocimiento de Entidades Nombradas (NER) con Flask y Spacy
+
+## Descripción
+
 Esta API permite identificar entidades nombradas en oraciones en español utilizando Flask y Spacy.
 
-# Descripción
-API Flask: Un servicio web simple que acepta oraciones en español y devuelve las entidades identificadas junto con sus tipos.
+## Instalación
 
-Script de prueba: Un script para realizar peticiones POST a la API y visualizar las respuestas en el formato.
+1. Clona este repositorio.
+2. Instala las dependencias:
 
-# Instalación:
-1-Clona este repositorio.
-2-Instala las dependencias: pip install flask spacy requests python -m spacy download es_core_news_sm
+```bash
+pip install flask spacy requests
+python -m spacy download es_core_news_sm
+```
 
-# Uso:
-# Ejecutar la API
-Navega hasta el directorio donde se encuentra el archivo de la API.
-Ejecuta el archivo:
-python api_rest_nlp_ner.py.py
+## Uso
 
-El servicio se iniciará en http://127.0.0.1:5000/ner
-Verás la respuesta de la API en la consola.
+### Ejecutar la API
 
-# Estructura de los Códigos
-API Flask:
+1. Navega hasta el directorio donde se encuentra el archivo de la API.
+2. Ejecuta el archivo:
 
-Se inicia una instancia de Flask y se carga el modelo de Spacy para español.
-Se define una ruta /ner que procesa las oraciones enviadas y devuelve las entidades identificadas.
-Se incluye manejo de errores básico para asegurar respuestas coherentes.
+```bash
+python api_rest_nlp_ner.py
+```
 
-Script de prueba:
-Se utiliza la biblioteca requests para enviar una petición POST a la API y json para la serialización y deserialización de datos en el formato JSON..
-Se imprime la respuesta de la API en la consola.
+El servicio se iniciará en `http://127.0.0.1:5000/ner`.
+
+### Probar la API con el ejemplo
+
+1. Asegúrate de que la API esté en funcionamiento.
+2. Navega hasta el directorio donde se encuentra el script de prueba.
+3. Ejecuta el script de prueba:
+
+```bash
+python request_example.py
+```
+
+La petición enviará las siguientes oraciones como ejemplo:
+
+```
+"Apple está buscando comprar una startup del Reino Unido por mil millones de dólares.",
+"San Francisco considera prohibir los robots de entrega en la acera."
+```
+
+La respuesta esperada de la API será similar a:
+
+```json
+{
+ "resultado": [
+ {
+   "oración": "Apple está buscando comprar una startup del Reino Unido por mil millones de dólares.",
+   "entidades": {
+     "Apple": "ORG",
+     "Reino Unido": "LOC"
+   }
+ },
+ {
+   "oración": "San Francisco considera prohibir los robots de entrega en la acera.",
+   "entidades": {
+     "San Francisco": "LOC"
+   }
+ }
+ ]
+}
+```
+
+El resultado se imprimirá en la consola.
