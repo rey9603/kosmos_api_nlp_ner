@@ -30,5 +30,5 @@ Se define una ruta /ner que procesa las oraciones enviadas y devuelve las entida
 Se incluye manejo de errores básico para asegurar respuestas coherentes.
 
 Script de prueba:
-Se utiliza la biblioteca requests para enviar una petición POST a la API.
+Se utiliza la biblioteca requests para enviar una petición POST a la API y json para la serialización y deserialización de datos en el formato JSON..
 Se imprime la respuesta de la API en la consola.
